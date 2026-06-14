@@ -1,0 +1,63 @@
+Programul dat executa si prelucreaza cerintele de la battleships. Este citit numarul de jocuri. Sunt alocati vectori de structuri pentru statisticile meciului.
+La fiecare meci sunt citite dimensiuni pentru tabla, aceasta fiind alocata dinamic apoi este alocat vectorul de struct de nave, se intra in etapa de plasare a navelor, programul verifica sa nu se suprapuna/
+sa nu fie out of bounds si sa fie introduse nave de catre ambii jucatori, cu randul. Daca o nava e pozitionata prost, jucatorului i se va spune sa introduca noi coordonate.
+Dupa ce se termina faza de plasare incep atacurile. Programul verifica in primul rand daca este rateu sau repetitie, daca este lovita o nava, programul verifica in vectorul de struct-uri de
+nave daca cumva a fost lovita radacina. Daca este lovita radacina, nava este marcata cu '#'. Celulele lovite sunt marcate cu 'x' indiferent daca sunt pe nave sau in apa. Loviturile
+sunt introduse pana cand un jucator ramane fara nave. La fiecare lovitura este afisat un mesaj adecvat(de lovire/distrugere/ratare/repetitie).Simultan sunt inregistrate statisticile
+(lovituri totale/si nimerite). La finalul meciului se calculeaza acuratetetea pe meci in vectorul de struct-uri si se trece la urmatorul meci dupa ce sunt eliberate zonele
+de memorie unde se afla tablele si vectorii de nave.Dupa ce au fost jucate toate meciurile, se calculeaza media 'ponderata' a meciurilor pentru fiecare jucator, se elibereaza
+tablele, vectorii de nave si se intra in urmatoarea etapa, statistics.
+Daca este dat alt mesaj in afara de Q putem da comenzi de tipul specificat pentru a afisa statisticile la fiecare jucator, astfel: numarul de lovituri ce trebuiau ratate/lovite astfel incat
+acuratetea pe meciul respectiv sa fie mai mare sau egala cu un anumit procentaj. Alternativa este numarul de meciuri ce pot avea acuratetea 0 sau 100% pentru a mentine acuratetea
+totala peste un anumit procentaj.Portiunea de stats functioneaza atata timp cat nu este trimisa comanda Q si proceseaza comanda astfel:
+Comanda->procesare comanda-Jucator1 -comanda pe un meci  - MIN 
+                                                         - MAX
+                                    -comanda pe toate meciurile -MIN
+                                                                -MAX
+                          -Jucator2 -comanda pe un meci  - MIN 
+                                                         - MAX
+                                    -comanda pe toate meciurile -MIN
+                                                                -MAX
+pentru comanda pe un meci acceseaza meciul cu id-ul respectiv si incrementeaza/scade numarul de lovituri nimerite(dupa caz) pana cand procentul este depasit apoi afiseaza 
+ceea ce se cere.
+
+                                                            
+Fazele jocului:
+Plasarea navelor - jucătorii plasează alternativ navele pe tabla lor
+
+Lupta - jucătorii trag alternativ pe tabla adversarului
+
+Statistici - după fiecare meci se calculează statistici
+
+Comenzi - la final, utilizatorul poate interoga statisticile
+
+Tipuri de Nave
+Simbol	Nume	Lungime	Caracter pe tablă
+S	Shinano	5 celule	'5'
+Y	Yamato	4 celule	'4'
+B	Belfast	3 celule	'3'
+L	Laffey	2 celule	'2'
+A	Albacore	1 celulă '1'
+
+Structuri de date utilizate:
+typedef struct {
+    int numar_lovituri_totale;
+    int numar_lovituri_nimerite;
+    double acuratete_meci;
+    int numar_nave_meci;
+    int numar_meci;
+} statistici_meci;
+
+typedef struct {
+    char tip;         // S, Y, B, L, A
+    char orientare;   // H (orizontal) sau V (vertical)
+    int x, y;         // coordonatele rădăcinii navei
+} nava;
+Funcții principale:
+plaseaza_nava() - verifică validitatea plasarii și plasează o navă pe tablă
+
+bubble_sort_statistici() - sortează statisticile meciurilor
+
+ac_totala() - calculează acuratețea totală a unui jucător
+
+alocare_tabla() / elibereaza_tabla() - gestionarea memoriei
